@@ -106,15 +106,22 @@ class App extends Component {
               );
             })}
           </table>
-          <form onSubmit={this.calculateHandler}>
+          <div>
             <input
               id="investment"
               placeholder="Investment"
+              type="text"
               value={this.state.inputValue}
               onChange={(e) => this.setState({ inputValue: e.target.value })}
             />
-            <input type="submit" id="calculate-btn" value="Submit" />
-          </form>
+            <button
+              id="calculate-btn"
+              value="Submit"
+              onClick={this.calculateHandler}
+            >
+              Submit
+            </button>
+          </div>
         </header>
       </div>
     );
