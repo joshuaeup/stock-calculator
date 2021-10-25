@@ -142,7 +142,7 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <h1>Stock Calculator</h1>
+          <h1 id="title">Stock Calculator</h1>
           <table id="investment-table">
             <tbody>
               <tr>
