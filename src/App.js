@@ -1,10 +1,8 @@
 import "./App.css";
 import axios from "axios";
 import { Component } from "react";
-// import dotenv from "dotenv";
-// dotenv.config();
 
-// const { API_KEY } = process.env;
+const API_KEY = process.env.REACT_APP_API_KEY;
 
 class App extends Component {
   constructor(props) {
@@ -14,96 +12,126 @@ class App extends Component {
         {
           name: "SPY",
           percentage: 40,
-          stockPrice: 0,
           investmentAmount: 0,
+          stockPrice: 0,
+          numberOfShares: 0,
         },
         {
           name: "ARKK",
           percentage: 25,
-          stockPrice: 0,
           investmentAmount: 0,
-        },
-        {
-          name: "SPYD",
-          percentage: 15,
           stockPrice: 0,
-          investmentAmount: 0,
+          numberOfShares: 0,
         },
         {
           name: "TSLA",
-          percentage: 10,
-          stockPrice: 0,
+          percentage: 15,
           investmentAmount: 0,
+          stockPrice: 0,
+          numberOfShares: 0,
+        },
+        {
+          name: "SPYD",
+          percentage: 10,
+          investmentAmount: 0,
+          stockPrice: 0,
+          numberOfShares: 0,
         },
         {
           name: "ETH",
-          percentage: 5,
-          stockPrice: 0,
+          percentage: 10,
           investmentAmount: 0,
-        },
-        {
-          name: "AAPL",
-          percentage: 5,
           stockPrice: 0,
-          investmentAmount: 0,
+          numberOfShares: 0,
         },
       ],
       inputValue: "",
+      stock1: "",
+      stock2: "",
+      stock3: "",
+      stock4: "",
+      stock5: "",
     };
   }
 
-  calculateHandler = (e) => {
+  calculateHandler = async (e) => {
     e.preventDefault();
+
+    await this.getStockPrices();
 
     this.setState({
       stocks: [
         {
           name: "SPY",
           percentage: 40,
-          stockPrice: this.getStockValue("SPY").then((data) => data),
           investmentAmount: this.state.inputValue * 0.4,
+          stockPrice: this.state.stock1,
+          numberOfShares: (this.state.inputValue * 0.4) / this.state.stock1,
         },
         {
           name: "ARKK",
           percentage: 25,
-          stockPrice: this.getStockValue("ARKK").then((data) => data),
           investmentAmount: this.state.inputValue * 0.25,
-        },
-        {
-          name: "SPYD",
-          percentage: 15,
-          stockPrice: this.getStockValue("SPYD").then((data) => data),
-          investmentAmount: this.state.inputValue * 0.15,
+          stockPrice: this.state.stock2,
+          numberOfShares: (this.state.inputValue * 0.25) / this.state.stock2,
         },
         {
           name: "TSLA",
+          percentage: 15,
+          investmentAmount: this.state.inputValue * 0.15,
+          stockPrice: this.state.stock3,
+          numberOfShares: (this.state.inputValue * 0.15) / this.state.stock3,
+        },
+        {
+          name: "SPYD",
           percentage: 10,
-          stockPrice: this.getStockValue("TSLA").then((data) => data),
           investmentAmount: this.state.inputValue * 0.1,
+          stockPrice: this.state.stock4,
+          numberOfShares: (this.state.inputValue * 0.1) / this.state.stock4,
         },
         {
           name: "ETH",
-          percentage: 5,
-          stockPrice: this.getStockValue("ETH").then((data) => data),
-          investmentAmount: this.state.inputValue * 0.05,
-        },
-        {
-          name: "AAPL",
-          percentage: 5,
-          stockPrice: this.getStockValue("AAPL").then((data) => data),
-          investmentAmount: this.state.inputValue * 0.05,
+          percentage: 10,
+          investmentAmount: this.state.inputValue * 0.1,
+          stockPrice: this.state.stock5,
+          numberOfShares: (this.state.inputValue * 0.1) / this.state.stock5,
         },
       ],
     });
+  };
 
-    // console.log(this.getStockValue("SPY").then((data) => data));
-    // this.getStockValue("SPY").then((data) => console.log(data));
+  getStockPrices = async (e) => {
+    await this.getStockValue("SPY").then((data) =>
+      this.setState({
+        stock1: data,
+      })
+    );
+    await this.getStockValue("ARKK").then((data) =>
+      this.setState({
+        stock2: data,
+      })
+    );
+    await this.getStockValue("TSLA").then((data) =>
+      this.setState({
+        stock3: data,
+      })
+    );
+    await this.getStockValue("SPYD").then((data) =>
+      this.setState({
+        stock4: data,
+      })
+    );
+    await this.getStockValue("ETH").then((data) =>
+      this.setState({
+        stock5: data,
+      })
+    );
   };
 
   getStockValue = async (ticker) => {
     const value = await axios
       .get(
-        `https://api.polygon.io/v2/aggs/ticker/${ticker}/prev?adjusted=true&apiKey=4GQAsMuf0zDBlz0_ymOVxT_4UJQp17Ve`
+        `https://api.polygon.io/v2/aggs/ticker/${ticker}/prev?adjusted=true&apiKey=${API_KEY}`
       )
       .then((item) => item.data.results[0].c);
 
@@ -120,8 +148,9 @@ class App extends Component {
               <tr>
                 <th className="table-heading">Stock</th>
                 <th className="table-heading">Percentage</th>
-                <th className="table-heading">Stock Price</th>
                 <th className="table-heading">Investment Amount</th>
+                <th className="table-heading">Stock Price</th>
+                <th className="table-heading"># of Shares</th>
               </tr>
             </tbody>
             {this.state.stocks.map((stock, index) => {
@@ -130,9 +159,12 @@ class App extends Component {
                   <tr>
                     <td className="table-item">{stock.name}</td>
                     <td className="table-item">{stock.percentage}%</td>
-                    <td className="table-item">{"$" + stock.stockPrice}</td>
                     <td className="table-item">
                       {"$" + stock.investmentAmount.toFixed(2)}
+                    </td>
+                    <td className="table-item">{"$" + stock.stockPrice}</td>
+                    <td className="table-item">
+                      {stock.numberOfShares.toFixed(3)}
                     </td>
                   </tr>
                 </tbody>
