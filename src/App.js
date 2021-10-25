@@ -17,25 +17,25 @@ class App extends Component {
           price: 0,
         },
         {
-          name: "SPYD",
+          name: "TSLA",
           percentage: 15,
           price: 0,
         },
         {
-          name: "TSLA",
+          name: "SPYD",
           percentage: 10,
           price: 0,
         },
         {
           name: "ETH",
-          percentage: 5,
+          percentage: 10,
           price: 0,
         },
-        {
-          name: "AAPL",
-          percentage: 5,
-          price: 0,
-        },
+        // {
+        //   name: "AAPL",
+        //   percentage: 5,
+        //   price: 0,
+        // },
       ],
       inputValue: "",
     };
@@ -56,25 +56,25 @@ class App extends Component {
           price: this.state.inputValue * 0.25,
         },
         {
-          name: "SPYD",
+          name: "TSLA",
           percentage: 15,
           price: this.state.inputValue * 0.15,
         },
         {
-          name: "TSLA",
+          name: "SPYD",
           percentage: 10,
           price: this.state.inputValue * 0.1,
         },
         {
           name: "ETH",
-          percentage: 5,
-          price: this.state.inputValue * 0.05,
+          percentage: 10,
+          price: this.state.inputValue * 0.1,
         },
-        {
-          name: "AAPL",
-          percentage: 5,
-          price: this.state.inputValue * 0.05,
-        },
+        // {
+        //   name: "AAPL",
+        //   percentage: 5,
+        //   price: this.state.inputValue * 0.05,
+        // },
       ],
     });
   };
