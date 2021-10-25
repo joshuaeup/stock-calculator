@@ -45,7 +45,7 @@ class App extends Component {
           numberOfShares: 0,
         },
       ],
-      inputValue: "",
+      userInput: "",
       stock1: "",
       stock2: "",
       stock3: "",
@@ -64,37 +64,37 @@ class App extends Component {
         {
           name: "SPY",
           percentage: 40,
-          investmentAmount: this.state.inputValue * 0.4,
+          investmentAmount: this.state.userInput * 0.4,
           stockPrice: this.state.stock1,
-          numberOfShares: (this.state.inputValue * 0.4) / this.state.stock1,
+          numberOfShares: (this.state.userInput * 0.4) / this.state.stock1,
         },
         {
           name: "ARKK",
           percentage: 25,
-          investmentAmount: this.state.inputValue * 0.25,
+          investmentAmount: this.state.userInput * 0.25,
           stockPrice: this.state.stock2,
-          numberOfShares: (this.state.inputValue * 0.25) / this.state.stock2,
+          numberOfShares: (this.state.userInput * 0.25) / this.state.stock2,
         },
         {
           name: "TSLA",
           percentage: 15,
-          investmentAmount: this.state.inputValue * 0.15,
+          investmentAmount: this.state.userInput * 0.15,
           stockPrice: this.state.stock3,
-          numberOfShares: (this.state.inputValue * 0.15) / this.state.stock3,
+          numberOfShares: (this.state.userInput * 0.15) / this.state.stock3,
         },
         {
           name: "SPYD",
           percentage: 10,
-          investmentAmount: this.state.inputValue * 0.1,
+          investmentAmount: this.state.userInput * 0.1,
           stockPrice: this.state.stock4,
-          numberOfShares: (this.state.inputValue * 0.1) / this.state.stock4,
+          numberOfShares: (this.state.userInput * 0.1) / this.state.stock4,
         },
         {
           name: "ETH",
           percentage: 10,
-          investmentAmount: this.state.inputValue * 0.1,
+          investmentAmount: this.state.userInput * 0.1,
           stockPrice: this.state.stock5,
-          numberOfShares: (this.state.inputValue * 0.1) / this.state.stock5,
+          numberOfShares: (this.state.userInput * 0.1) / this.state.stock5,
         },
       ],
     });
@@ -176,8 +176,8 @@ class App extends Component {
               id="investment"
               placeholder="Investment"
               type="text"
-              value={this.state.inputValue}
-              onChange={(e) => this.setState({ inputValue: e.target.value })}
+              value={this.state.userInput}
+              onChange={(e) => this.setState({ userInput: e.target.value })}
             />
             <button
               id="calculate-btn"
