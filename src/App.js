@@ -1,50 +1,14 @@
-import "./App.css";
-import axios from "axios";
-import { Component } from "react";
+import "./styles/App.css";
 
-const API_KEY = process.env.REACT_APP_API_KEY;
+import { Component } from "react";
+import stocks from "./data/stocks";
+import getStockValue from "./utilities/polygon";
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      stocks: [
-        {
-          name: "SPY",
-          percentage: 40,
-          investmentAmount: 0,
-          stockPrice: 0,
-          numberOfShares: 0,
-        },
-        {
-          name: "ARKK",
-          percentage: 25,
-          investmentAmount: 0,
-          stockPrice: 0,
-          numberOfShares: 0,
-        },
-        {
-          name: "TSLA",
-          percentage: 15,
-          investmentAmount: 0,
-          stockPrice: 0,
-          numberOfShares: 0,
-        },
-        {
-          name: "SPYD",
-          percentage: 10,
-          investmentAmount: 0,
-          stockPrice: 0,
-          numberOfShares: 0,
-        },
-        {
-          name: "ETH",
-          percentage: 10,
-          investmentAmount: 0,
-          stockPrice: 0,
-          numberOfShares: 0,
-        },
-      ],
+      stocks: stocks,
       userInput: "",
       stock1: "",
       stock2: "",
@@ -54,12 +18,18 @@ class App extends Component {
     };
   }
 
+  componentDidMount() {
+    this.getStockPrices();
+  }
+
   calculateHandler = async (e) => {
     e.preventDefault();
 
-    await this.getStockPrices();
+    await this.setCalculations();
+  };
 
-    this.setState({
+  setCalculations = async (e) => {
+    await this.setState({
       stocks: [
         {
           name: "SPY",
@@ -101,41 +71,31 @@ class App extends Component {
   };
 
   getStockPrices = async (e) => {
-    await this.getStockValue("SPY").then((data) =>
+    await getStockValue("SPY").then((data) =>
       this.setState({
         stock1: data,
       })
     );
-    await this.getStockValue("ARKK").then((data) =>
+    await getStockValue("ARKK").then((data) =>
       this.setState({
         stock2: data,
       })
     );
-    await this.getStockValue("TSLA").then((data) =>
+    await getStockValue("TSLA").then((data) =>
       this.setState({
         stock3: data,
       })
     );
-    await this.getStockValue("SPYD").then((data) =>
+    await getStockValue("SPYD").then((data) =>
       this.setState({
         stock4: data,
       })
     );
-    await this.getStockValue("ETH").then((data) =>
+    await getStockValue("ETH").then((data) =>
       this.setState({
         stock5: data,
       })
     );
-  };
-
-  getStockValue = async (ticker) => {
-    const value = await axios
-      .get(
-        `https://api.polygon.io/v2/aggs/ticker/${ticker}/prev?adjusted=true&apiKey=${API_KEY}`
-      )
-      .then((item) => item.data.results[0].c);
-
-    return value;
   };
 
   render() {
