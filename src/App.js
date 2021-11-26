@@ -72,7 +72,7 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <h1 id="title">Stock Calculator</h1>
+          <h1 id="title">Stocky</h1>
           <div id="toggle-btn__container">
             <button
               className="toggle-btn"
