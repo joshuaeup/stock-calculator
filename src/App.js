@@ -1,101 +1,71 @@
 import "./styles/App.css";
 
 import { Component } from "react";
-import stocks from "./data/stocks";
+import { short_term_stocks, long_term_stocks } from "./data/stocks";
 import getStockValue from "./utilities/polygon";
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      stocks: stocks,
+      selectShortTerm: true,
+      stocks: [],
       userInput: "",
-      stock1: "",
-      stock2: "",
-      stock3: "",
-      stock4: "",
-      stock5: "",
     };
   }
 
   componentDidMount() {
-    this.getStockPrices();
+    this.setState({
+      stocks: this.state.selectShortTerm ? short_term_stocks : long_term_stocks,
+    });
   }
 
   calculateHandler = async (e) => {
     e.preventDefault();
 
+    await this.getStockPrices();
     await this.setCalculations();
   };
 
   setCalculations = async (e) => {
+    const updatedStocks = [];
+
+    for (let i = 0; i < this.state.stocks.length; i++) {
+      const percentageAsDecimal = this.state.stocks[i].percentage / 100;
+      updatedStocks.push({
+        name: this.state.stocks[i].name,
+        percentage: this.state.stocks[i].percentage,
+        investmentAmount: this.state.userInput * percentageAsDecimal,
+        stockPrice: this.state[`stock${i + 1}`],
+        numberOfShares:
+          (this.state.userInput * percentageAsDecimal) /
+          this.state[`stock${i + 1}`],
+      });
+    }
+
     await this.setState({
-      stocks: [
-        {
-          name: "SPY",
-          percentage: 40,
-          investmentAmount: this.state.userInput * 0.4,
-          stockPrice: this.state.stock1,
-          numberOfShares: (this.state.userInput * 0.4) / this.state.stock1,
-        },
-        {
-          name: "ARKK",
-          percentage: 25,
-          investmentAmount: this.state.userInput * 0.25,
-          stockPrice: this.state.stock2,
-          numberOfShares: (this.state.userInput * 0.25) / this.state.stock2,
-        },
-        {
-          name: "TSLA",
-          percentage: 15,
-          investmentAmount: this.state.userInput * 0.15,
-          stockPrice: this.state.stock3,
-          numberOfShares: (this.state.userInput * 0.15) / this.state.stock3,
-        },
-        {
-          name: "SPYD",
-          percentage: 10,
-          investmentAmount: this.state.userInput * 0.1,
-          stockPrice: this.state.stock4,
-          numberOfShares: (this.state.userInput * 0.1) / this.state.stock4,
-        },
-        {
-          name: "ETH",
-          percentage: 10,
-          investmentAmount: this.state.userInput * 0.1,
-          stockPrice: this.state.stock5,
-          numberOfShares: (this.state.userInput * 0.1) / this.state.stock5,
-        },
-      ],
+      stocks: updatedStocks,
     });
   };
 
   getStockPrices = async (e) => {
-    await getStockValue("SPY").then((data) =>
-      this.setState({
-        stock1: data,
-      })
-    );
-    await getStockValue("ARKK").then((data) =>
-      this.setState({
-        stock2: data,
-      })
-    );
-    await getStockValue("TSLA").then((data) =>
-      this.setState({
-        stock3: data,
-      })
-    );
-    await getStockValue("SPYD").then((data) =>
-      this.setState({
-        stock4: data,
-      })
-    );
-    await getStockValue("ETH").then((data) =>
-      this.setState({
-        stock5: data,
-      })
-    );
+    for (let i = 0; i < this.state.stocks.length; i++) {
+      await getStockValue(this.state.stocks[i].name).then((data) => {
+        return this.setState({
+          [`stock${i + 1}`]: data,
+        });
+      });
+    }
+  };
+
+  updateStockType = (e) => {
+    e.preventDefault();
+
+    const result = e.target.value === "shortTerm" ? true : false;
+
+    this.setState({
+      stocks: result ? short_term_stocks : long_term_stocks,
+    });
   };
 
   render() {
@@ -103,6 +73,22 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <h1 id="title">Stock Calculator</h1>
+          <div id="toggle-btn__container">
+            <button
+              className="toggle-btn"
+              value="shortTerm"
+              onClick={this.updateStockType}
+            >
+              Short Term
+            </button>
+            <button
+              className="toggle-btn"
+              value="longTerm"
+              onClick={this.updateStockType}
+            >
+              Long Term
+            </button>
+          </div>
           <table id="investment-table">
             <tbody>
               <tr>

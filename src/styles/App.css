@@ -17,6 +17,32 @@
 
 /* Body styles */
 
+#toggle-btn__container {
+  grid-template-columns: 1fr 1fr;
+}
+
+.toggle-btn {
+  border: none;
+  padding: 1rem;
+  text-align: center;
+  border-radius: 25px;
+  background-color: #04aa6d;
+  color: white;
+  width: 20rem;
+  font-size: 1.3rem;
+  border: white solid 1px;
+}
+
+.toggle-btn:nth-child(1) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.toggle-btn:nth-child(2) {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
 #investment-table {
   margin: 3rem 0;
   text-align: left;
@@ -44,7 +70,9 @@
   color: white;
 }
 
-#calculate-btn:hover {
+#calculate-btn:hover,
+.toggle-btn:hover,
+.toggle-btn:focus {
   cursor: pointer;
   background-color: #05c780;
 }
