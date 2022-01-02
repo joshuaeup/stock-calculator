@@ -1,7 +1,7 @@
 const short_term_stocks = [
   {
     name: "SPY",
-    percentage: 40,
+    percentage: 75,
     investmentAmount: 0,
     stockPrice: 0,
     numberOfShares: 0,
@@ -9,13 +9,6 @@ const short_term_stocks = [
   {
     name: "ARKK",
     percentage: 25,
-    investmentAmount: 0,
-    stockPrice: 0,
-    numberOfShares: 0,
-  },
-  {
-    name: "SPYD",
-    percentage: 10,
     investmentAmount: 0,
     stockPrice: 0,
     numberOfShares: 0,
